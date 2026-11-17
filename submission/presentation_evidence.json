@@ -1,0 +1,360 @@
+{
+  "followup": {
+    "status": "completed_train_only",
+    "n_candidates": 20,
+    "cv_AP": 0.35075041165276344,
+    "cv_AUROC": 0.8544832620735952,
+    "previous_cv_AP": 0.35075041165276344,
+    "AP_delta": 0.0,
+    "best_params": {
+      "model__learning_rate": 0.05,
+      "model__max_depth": 3,
+      "model__min_child_weight": 1,
+      "model__n_estimators": 250,
+      "model__reg_lambda": 1.0,
+      "model__subsample": 1.0
+    },
+    "oof_threshold": 0.10039499402046204,
+    "oof_F2": 0.5104756834860641,
+    "oof_precision": 0.26177244808423517,
+    "oof_recall": 0.6694925819723226,
+    "test_evaluated": false,
+    "limitation": "Test 확인 후 추가 탐색이며 Train CV만 사용. 기존 Test 성적은 최초 고정 모델의 평가 기록."
+  },
+  "baseline": [
+    {
+      "model": "XGB",
+      "AP_mean": 0.34981558514201827,
+      "AP_std": 0.013606655987854087,
+      "AUROC_mean": 0.8552517370078216,
+      "AUROC_std": 0.0032049640416524313,
+      "fit_time_mean_sec": 0.6067399024963379
+    },
+    {
+      "model": "LGB",
+      "AP_mean": 0.34054289550612904,
+      "AP_std": 0.010281845186392405,
+      "AUROC_mean": 0.8510408175551921,
+      "AUROC_std": 0.0032767062123035752,
+      "fit_time_mean_sec": 0.6443755149841308
+    },
+    {
+      "model": "RF",
+      "AP_mean": 0.29961625927392826,
+      "AP_std": 0.010841708176373938,
+      "AUROC_mean": 0.8246289945080456,
+      "AUROC_std": 0.006009569674453333,
+      "fit_time_mean_sec": 11.54606523513794
+    },
+    {
+      "model": "LR",
+      "AP_mean": 0.27666483202870323,
+      "AP_std": 0.0070016759896516225,
+      "AUROC_mean": 0.8227874968111543,
+      "AUROC_std": 0.002975689634913896,
+      "fit_time_mean_sec": 0.11479015350341797
+    },
+    {
+      "model": "ET",
+      "AP_mean": 0.272100070267917,
+      "AP_std": 0.01181173957656444,
+      "AUROC_mean": 0.81138248091832,
+      "AUROC_std": 0.003546743915812333,
+      "fit_time_mean_sec": 5.4983258724212645
+    },
+    {
+      "model": "DT",
+      "AP_mean": 0.11077940780794135,
+      "AP_std": 0.002307315937318105,
+      "AUROC_mean": 0.5994857832819516,
+      "AUROC_std": 0.0028483816869535957,
+      "fit_time_mean_sec": 0.49645395278930665
+    }
+  ],
+  "feature": [
+    {
+      "model": "LGB",
+      "feature": "Original",
+      "AP_mean": 0.34054289550612904,
+      "AP_std": 0.010281845186392406,
+      "AUROC_mean": 0.8510408175551921,
+      "AUROC_std": 0.003276706212303585,
+      "n_features_mean": 9.0,
+      "fit_time_mean_sec": 0.6202967166900635
+    },
+    {
+      "model": "LGB",
+      "feature": "PCA",
+      "AP_mean": 0.3317634061914705,
+      "AP_std": 0.01710447423339503,
+      "AUROC_mean": 0.8455508828280944,
+      "AUROC_std": 0.00303278707062021,
+      "n_features_mean": 8.0,
+      "fit_time_mean_sec": 0.6874033451080322
+    },
+    {
+      "model": "LR",
+      "feature": "Original",
+      "AP_mean": 0.2766648320287032,
+      "AP_std": 0.007001675989651604,
+      "AUROC_mean": 0.8227874968111545,
+      "AUROC_std": 0.0029756896349138686,
+      "n_features_mean": 9.0,
+      "fit_time_mean_sec": 0.08994159698486329
+    },
+    {
+      "model": "LR",
+      "feature": "PCA",
+      "AP_mean": 0.2698462475901388,
+      "AP_std": 0.00608594612784033,
+      "AUROC_mean": 0.8168338167654289,
+      "AUROC_std": 0.0029207253330803488,
+      "n_features_mean": 8.0,
+      "fit_time_mean_sec": 0.10375103950500489
+    },
+    {
+      "model": "RF",
+      "feature": "Original",
+      "AP_mean": 0.2996162592739282,
+      "AP_std": 0.010841708176373937,
+      "AUROC_mean": 0.8246289945080456,
+      "AUROC_std": 0.006009569674453338,
+      "n_features_mean": 9.0,
+      "fit_time_mean_sec": 11.070260572433472
+    },
+    {
+      "model": "RF",
+      "feature": "PCA",
+      "AP_mean": 0.2892041900501619,
+      "AP_std": 0.009447846908020838,
+      "AUROC_mean": 0.8190084299101601,
+      "AUROC_std": 0.001220751716714058,
+      "n_features_mean": 8.0,
+      "fit_time_mean_sec": 21.992345809936523
+    },
+    {
+      "model": "XGB",
+      "feature": "Original",
+      "AP_mean": 0.34981558514201827,
+      "AP_std": 0.013606655987854089,
+      "AUROC_mean": 0.8552517370078215,
+      "AUROC_std": 0.0032049640416524404,
+      "n_features_mean": 9.0,
+      "fit_time_mean_sec": 0.5928391456604004
+    },
+    {
+      "model": "XGB",
+      "feature": "PCA",
+      "AP_mean": 0.3365668447650873,
+      "AP_std": 0.015977181239345956,
+      "AUROC_mean": 0.8482654873094901,
+      "AUROC_std": 0.0029763663175222392,
+      "n_features_mean": 8.0,
+      "fit_time_mean_sec": 0.7121335983276367
+    }
+  ],
+  "balance": [
+    {
+      "model": "XGB",
+      "balance": "None",
+      "AP_mean": 0.34981558514201827,
+      "AP_std": 0.013606655987854089,
+      "AUROC_mean": 0.8552517370078215,
+      "AUROC_std": 0.0032049640416524404,
+      "fit_time_mean_sec": 0.48539236000005986
+    },
+    {
+      "model": "XGB",
+      "balance": "IR",
+      "AP_mean": 0.34831109125409515,
+      "AP_std": 0.010220600015796834,
+      "AUROC_mean": 0.8551167849045355,
+      "AUROC_std": 0.0031564396230023355,
+      "fit_time_mean_sec": 0.48724873999999546
+    },
+    {
+      "model": "LGB",
+      "balance": "IR",
+      "AP_mean": 0.3417264876928613,
+      "AP_std": 0.012975452060712715,
+      "AUROC_mean": 0.8501098611750176,
+      "AUROC_std": 0.0038788632306350638,
+      "fit_time_mean_sec": 0.49944194000004244
+    },
+    {
+      "model": "LGB",
+      "balance": "None",
+      "AP_mean": 0.34054289550612904,
+      "AP_std": 0.010281845186392406,
+      "AUROC_mean": 0.8510408175551921,
+      "AUROC_std": 0.003276706212303585,
+      "fit_time_mean_sec": 0.499449340000001
+    },
+    {
+      "model": "LGB",
+      "balance": "SMOTE",
+      "AP_mean": 0.3226329038629323,
+      "AP_std": 0.012540766906802357,
+      "AUROC_mean": 0.8434975758175242,
+      "AUROC_std": 0.004857570476065478,
+      "fit_time_mean_sec": 1.1574760999999854
+    },
+    {
+      "model": "XGB",
+      "balance": "SMOTE",
+      "AP_mean": 0.3212202517779669,
+      "AP_std": 0.013908141870949908,
+      "AUROC_mean": 0.8444331261027518,
+      "AUROC_std": 0.0036458600185066137,
+      "fit_time_mean_sec": 1.0181465599999684
+    },
+    {
+      "model": "RF",
+      "balance": "None",
+      "AP_mean": 0.2996162592739282,
+      "AP_std": 0.010841708176373937,
+      "AUROC_mean": 0.8246289945080456,
+      "AUROC_std": 0.006009569674453338,
+      "fit_time_mean_sec": 8.984854319999977
+    },
+    {
+      "model": "LR",
+      "balance": "IR",
+      "AP_mean": 0.29762443202484956,
+      "AP_std": 0.008000058735018245,
+      "AUROC_mean": 0.8435935671387442,
+      "AUROC_std": 0.0033837216247449187,
+      "fit_time_mean_sec": 0.0616000399999848
+    },
+    {
+      "model": "LR",
+      "balance": "SMOTE",
+      "AP_mean": 0.29700940085224525,
+      "AP_std": 0.008166386758880583,
+      "AUROC_mean": 0.843669890596393,
+      "AUROC_std": 0.003517460833107412,
+      "fit_time_mean_sec": 0.2749362999999903
+    },
+    {
+      "model": "RF",
+      "balance": "IR",
+      "AP_mean": 0.2859547162342947,
+      "AP_std": 0.010121734577271016,
+      "AUROC_mean": 0.826359888070362,
+      "AUROC_std": 0.0040383865019297405,
+      "fit_time_mean_sec": 7.354468199999974
+    },
+    {
+      "model": "LR",
+      "balance": "None",
+      "AP_mean": 0.2766648320287032,
+      "AP_std": 0.007001675989651604,
+      "AUROC_mean": 0.8227874968111545,
+      "AUROC_std": 0.0029756896349138686,
+      "fit_time_mean_sec": 0.05687623999997413
+    },
+    {
+      "model": "RF",
+      "balance": "SMOTE",
+      "AP_mean": 0.2603044962971902,
+      "AP_std": 0.011800858734390223,
+      "AUROC_mean": 0.8106513753171501,
+      "AUROC_std": 0.004399669709510418,
+      "fit_time_mean_sec": 22.57783780000009
+    },
+    {
+      "model": "LR",
+      "balance": "NearMiss",
+      "AP_mean": 0.2060328648522857,
+      "AP_std": 0.006424208150978296,
+      "AUROC_mean": 0.780701707079993,
+      "AUROC_std": 0.0073208153167147565,
+      "fit_time_mean_sec": 1.52780800000005
+    },
+    {
+      "model": "XGB",
+      "balance": "NearMiss",
+      "AP_mean": 0.12263369653639104,
+      "AP_std": 0.007279312806160853,
+      "AUROC_mean": 0.683713300637993,
+      "AUROC_std": 0.012843187947058413,
+      "fit_time_mean_sec": 1.601776679999921
+    },
+    {
+      "model": "RF",
+      "balance": "NearMiss",
+      "AP_mean": 0.11914405278168834,
+      "AP_std": 0.0051903433710219,
+      "AUROC_mean": 0.662489367348276,
+      "AUROC_std": 0.0091559132759451,
+      "fit_time_mean_sec": 2.5162292600000002
+    },
+    {
+      "model": "LGB",
+      "balance": "NearMiss",
+      "AP_mean": 0.10605564423053063,
+      "AP_std": 0.006473471049523905,
+      "AUROC_mean": 0.651760928362308,
+      "AUROC_std": 0.012193284821598526,
+      "fit_time_mean_sec": 1.594761420000077
+    }
+  ],
+  "frozen_test": [
+    {
+      "rule": "Default",
+      "threshold": 0.5,
+      "AP": 0.34877416941872086,
+      "AUROC": 0.8580270078509745,
+      "Precision": 0.5698324022346368,
+      "Recall": 0.10174563591022444,
+      "F1": 0.17266187050359713,
+      "F2": 0.12174743375507281,
+      "MCC": 0.22134961621338978,
+      "Brier": 0.0514148473739624,
+      "TN": 27841,
+      "FP": 154,
+      "FN": 1801,
+      "TP": 204
+    },
+    {
+      "rule": "Train OOF F2 threshold",
+      "threshold": 0.10039499402046204,
+      "AP": 0.34877416941872086,
+      "AUROC": 0.8580270078509745,
+      "Precision": 0.2570273392375818,
+      "Recall": 0.6658354114713217,
+      "F1": 0.3708848451173774,
+      "F2": 0.5051460572120479,
+      "MCC": 0.3484923580089529,
+      "Brier": 0.0514148473739624,
+      "TN": 24136,
+      "FP": 3859,
+      "FN": 670,
+      "TP": 1335
+    }
+  ],
+  "frozen_config": {
+    "model": "XGB",
+    "feature": "Original (8 features + special flag)",
+    "use_log": true,
+    "balance": "None",
+    "seed": 33,
+    "n_splits": 5,
+    "best_params": {
+      "model__learning_rate": 0.05,
+      "model__max_depth": 3,
+      "model__n_estimators": 250
+    },
+    "threshold_rule": "Train OOF F2 maximum; ties use lower threshold",
+    "threshold": 0.10039499402046204
+  },
+  "data": {
+    "rows": 150000,
+    "train": 120000,
+    "test": 30000,
+    "positive": 10026,
+    "negative": 139974,
+    "raw_features": 8,
+    "model_features": 9
+  }
+}

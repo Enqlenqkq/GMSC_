@@ -1,0 +1,15 @@
+{
+  "model": "XGB",
+  "feature": "Original (8 features + special flag)",
+  "use_log": true,
+  "balance": "None",
+  "seed": 33,
+  "n_splits": 5,
+  "best_params": {
+    "model__learning_rate": 0.05,
+    "model__max_depth": 3,
+    "model__n_estimators": 250
+  },
+  "threshold_rule": "Train OOF F2 maximum; ties use lower threshold",
+  "threshold": 0.10039499402046204
+}

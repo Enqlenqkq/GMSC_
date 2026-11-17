@@ -2,3 +2,19 @@
 .env
 __pycache__/
 .ipynb_checkpoints/
+
+# 재현 가능한 대용량 중간 예측·threshold 탐색 결과
+/balance_oof.csv
+/xgb_tuned_oof.csv
+/xgb_threshold_search.csv
+/submission/followup_train_oof.csv
+
+# 발표 제작 중간 명세·검수용 렌더링 (최종 PPTX와 근거 JSON은 보관)
+/submission/deck_spec.json
+/submission/slides/
+
+# lab.ipynb에서 다시 생성할 수 있는 연습용 출력
+/finalized_model.sav
+/finalized_model2.sav
+/weights.out
+/GMSC_tree.dot
