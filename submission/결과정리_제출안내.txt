@@ -13,11 +13,13 @@ GMSC 과제 결과 정리
    선택 설정={"model__learning_rate": 0.05, "model__max_depth": 3, "model__min_child_weight": 1, "model__n_estimators": 250, "model__reg_lambda": 1.0, "model__subsample": 1.0}.
    추가 탐색에서 Test는 재평가하지 않음. 기존 최적 설정이 다시 선택되어 기존 고정 모델의 Test 결과를 유지.
 10. 한계: 단계적 선택 편향, CV fold 비독립성, 범주 가공 규칙 미확정, 일반 SMOTE 보간, 단일 데이터셋.
-    검정·XAI는 수행한 것으로 쓰지 않는다. CV 차이를 통계적 유의성으로 주장하지 않는다.
+    유의성 검정은 수행하지 않았다. CV 차이를 통계적 유의성으로 주장하지 않는다.
 
 제출 확인
 - ass.ipynb의 기존 실행 결과 및 데이터 경로 확인
-- GMSC_7min.pptx: 본문 8장+부록 2장, 발표자 노트 포함
+- GMSC_7min.pptx: 본문 8장+부록 3장, 발표자 노트 포함
 - 발표대본_7분.txt로 실제 리허설
 - 익명 발표자료이므로 필요한 이름·학번을 표지에 직접 입력
 - 이후 Test 점수를 보고 설정을 다시 선택하지 않기
+
+XAI 추가: Train 배경100건·Test 층화1000건의 TreeSHAP. RevUtil·CombDefault·Age가 상위이며, 단위는 log-odds다. 전역 중요도·beeswarm·오탐/미탐 포함 개별 waterfall은 submission/xai/에 보관한다. 인과 원인으로 해석하지 않는다.

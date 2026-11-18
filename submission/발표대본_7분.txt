@@ -1,4 +1,4 @@
-GMSC 발표 대본 — 본문 8장, 목표 7분 / 부록 2장
+GMSC 발표 대본 — 본문 8장, 목표 7분 / 부록 3장
 시간은 배분 목표입니다. 실제 낭독 속도로 1회 리허설 후 문장을 조절하세요.
 
 1. GMSC 연체 예측 (20초)
@@ -30,3 +30,6 @@ GMSC 발표 대본 — 본문 8장, 목표 7분 / 부록 2장
 
 10. 부록: 지표·재현성·근거 (부록)
 수치 근거: baseline_summary.csv, feature_summary.csv, balance_summary.csv, final_test_metrics.csv, final_config.json, submission/followup_tuning_results.csv. 지표 설명: https://scikit-learn.org/stable/modules/model_evaluation.html . threshold: https://scikit-learn.org/stable/modules/classification_threshold.html . XGB: https://xgboost.readthedocs.io/en/stable/parameter.html . 논문 제목과 정확한 범주 가공 규칙은 제공되지 않아 임의로 기재하지 않았습니다.
+
+11. 부록: 최종 XGB의 SHAP 중요도 (부록)
+Train 실제 표본 100건을 배경으로 Test 층화 표본 1000건에 대해 interventional TreeExplainer를 적용했습니다. 평균 절대 SHAP 값은 RevUtil, CombDefault, Age 순으로 높았습니다. beeswarm에서는 높은 RevUtil과 높은 CombDefault 값이 양성 점수를 높이는 방향의 기여를 보였습니다. 이 값은 확률의 퍼센트가 아니라 log-odds 단위이고, 특성 값은 로그 및 z-score 변환 후의 모델 입력입니다. 기여도 합계와 기준값이 실제 모델 raw 점수와 일치하는지도 검증했습니다. 고위험으로 예측한 사례가 실제 정답이라는 뜻은 아니며 오탐과 미탐도 함께 설명했습니다. SHAP은 실제 연체의 인과 원인을 증명하지 않습니다. 근거: submission/xai/xai_report.json, https://shap.readthedocs.io/en/stable/generated/shap.TreeExplainer.html

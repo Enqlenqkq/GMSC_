@@ -14,12 +14,9 @@ from xgboost import XGBClassifier
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'submission'
 OUT.mkdir(exist_ok=True)
-nb = json.loads((ROOT / 'ass.ipynb').read_text(encoding='utf-8'))
-class_source = next(''.join(c['source']) for c in nb['cells']
-                    if c['cell_type'] == 'code' and 'class GMSCPreprocessor(' in ''.join(c['source']))
-tree = ast.parse(class_source)
-class_node = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'GMSCPreprocessor')
-exec(compile(ast.Module(body=[class_node], type_ignores=[]), '<notebook preprocessor>', 'exec'))
+import sys
+sys.path.insert(0, str(ROOT))
+from gmsc_preprocessing import GMSCPreprocessor
 
 data = pd.read_csv(ROOT / 'givemesomecredit.csv').rename(columns={
     'SeriousDlqin2yrs': 'Dlq2yrs',

@@ -1,0 +1,22 @@
+최종 XGB SHAP 분석
+
+전역 중요도 상위3: RevUtil, CombDefault, Age
+Train 실제 표본100건을 배경으로 Test 층화표본1000건(양성67건)을 설명했다.
+최종 모델은 재학습하거나 수정하지 않았다. 모델 파일 SHA-256=fb48ad400e3727e8fe369e0587a51a0806aa6346ba0131d0208c13aaf4b28c0f
+SHAP 합계+기준값과 모델 raw margin 일치 확인: 최대 오차 0.00000390
+
+그래프 해석
+- global_importance.png: 평균 |SHAP|가 클수록 해당 표본에서 모델 예측에 큰 기여를 한다.
+- beeswarm.png: SHAP 양수는 양성 점수를 높이고 음수는 낮춘다. 빨강은 변환된 특성값이 높고 파랑은 낮다.
+- top_feature_dependence.png: 상위 특성의 모델 입력값과 SHAP 기여도 관계를 보여준다.
+- waterfall_*.png: 기준 log-odds에 각 기여도를 더해 해당 행의 모델 점수에 도달한다.
+- 원 단위 입력과 실제 라벨·예측 확률·선택 임계값은 local_cases.csv에서 확인한다.
+
+주의
+모든 SHAP 수치는 확률이나 퍼센트가 아니라 log-odds 단위다.
+0보다 큰 기여는 실제 부도의 인과 원인이라는 뜻이 아니다.
+극단값 사례는 설명 목적의 선택이며 모델 전체 성능이나 일반적 고객을 대표하지 않는다.
+배경 표본 및 상관 특성 처리 가정에 따라 중요도·기여도가 달라질 수 있다.
+설명 값만을 근거로 개인에 대한 자동화된 금융 의사결정의 정당성을 주장하지 않는다.
+
+근거: https://shap.readthedocs.io/en/stable/generated/shap.TreeExplainer.html

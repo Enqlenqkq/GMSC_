@@ -1,0 +1,99 @@
+benchmark/creditanalysis.ipynb와 ass.ipynb 비교 분석
+
+1. 핵심 결론
+
+benchmark는 seed=7, 현재 과제는 seed=33으로 같은 형태의 15만 건 데이터를 분할했다.
+현재 CSV와 benchmark 최종 설정·seed=7을 그대로 사용해 재학습했을 때 저장 모델과
+전체 150,000건의 예측 확률 및 트리 덤프가 정확히 일치했다. benchmark 자체 Test에서
+AUROC도 0.857729로 노트북 출력 0.8577과 일치했다.
+
+재구성한 분할 기준으로 현재 Test 30,000건 중 23,978건(79.93%)이 benchmark Train에 포함된다.
+따라서 앞선 30,000건 비교의 benchmark AP 0.3724 대 현재 모델 AP 0.3488을
+독립적인 일반화 성능 우위로 해석하면 안 된다. 기존 metrics.csv와 model_comparison.png는
+계산된 관측값 기록으로 보존하되, 수정된 해석은 이 파일과 split_audit_metrics.csv를 우선한다.
+
+두 분할의 Test 교집합은 6,022건(양성 409건)이다. 이 표본은 재구성한 두 Train 모두에서 제외된다.
+단, 이미 확인한 데이터를 사용한 사후 분석이므로 새로운 외부 검증 또는 유의성 검정은 아니다.
+
+2. 설계 차이 (노트북 셀 번호는 내부 0-based 인덱스)
+
+항목                  benchmark/creditanalysis.ipynb                  ass.ipynb
+데이터 분할           80/20 Stratified, seed=7 (cell 16)             80/20 Stratified, seed=33
+EDA                   전체 데이터, 분할 이전                       Train만 분석
+최종 입력             원본 8개, 별도 스케일·로그 변환 없음          특수값 치환+flag, log1p, 스케일링 → 9개
+모델 비교             LR/LDA/NB/KNN/DT/RF/GB/XGB                   LR/DT/RF/ET/LGB/XGB
+피처 실험             상위5/전체8, 원본8+PCA2, 원본8+AE2           공통 전처리 Original9/PCA8
+리샘플링 CV           Train 전체 스케일·리샘플링 후 CV (cell 23)   fold 학습 부분 안에서만 수행
+튜닝                  원본 XGB, ROC-AUC, 3-fold, 10후보 (cell 27)  AP, 고정 5-fold, 최초12+추가20후보
+저장 모델             best_model: 원본 XGB, 보정 없음               전처리+스케일러+XGB, 보정 없음
+Threshold             기본 0.5                                      Train OOF F2 최대화 약 0.100395
+추가 분석             MLP·재구성 AE·SHAP 있음                      MLP·XAI는 미수행, Recall 비교 있음
+
+3. benchmark에서 유의해야 할 부분
+
+A. 리샘플링 CV의 누수와 평가 분포 변경 (cell 23)
+scaler_res.fit_transform(X_train) → resampler.fit_resample(...) → cross_validate(X_res, Y_res)
+순서다. CV 검증 fold의 정보가 스케일링·합성/선택 과정에 반영될 수 있으며, 검증 집합 자체도
+1:1로 균형화된 분포다. 특히 SMOTE에서 학습·검증 사이에 원본-합성 이웃 관계가 걸릴 수 있다.
+따라서 SMOTE CV AUROC 0.9670, Recall 0.9028을 원래 불균형 Test 성능이나
+현재 과제의 fold 내부 리샘플링 CV와 직접 비교하면 안 된다.
+
+B. 특성 선택을 CV 전에 수행 (cell 17~18)
+전체 Train의 Y를 사용해 ExtraTrees 중요도와 Top5를 정한 뒤 같은 Train을 CV로 나눈다.
+Top5 선택 효과를 평가하려면 selector도 각 fold 학습 부분에서 새로 fit해야 한다.
+다만 최종 저장 모델은 전체8 특성을 사용하며, 이 Top5 선택기를 모델 입력에 적용하지 않는다.
+
+C. 최종 저장 모델과 SMOTE 실험은 서로 다름 (cell 25 vs 27)
+cell 25의 xgb_smote는 표준화·SMOTE 학습 모델이며 Test Recall 73.0%를 보고한다.
+cell 27의 저장 best_model은 원본 X_train으로 RandomizedSearchCV한 별도 모델이다.
+SMOTE를 쓰지 않고 scale_pos_weight=1.0이며, 저장 모델의 기본 threshold Recall은 약 10%다.
+따라서 제공된 joblib를 SMOTE+튜닝 모델이라고 소개하거나 Recall 73%를 붙이면 안 된다.
+또한 cell 25의 Before/After 모델은 트리 수·깊이·학습률 등도 달라 SMOTE 단독 효과 실험이 아니다.
+
+D. 과도한 결론을 피할 부분
+- PCA 2차원 산점도의 중첩만으로 선형 모델 부적합·트리 필수를 확정할 수 없다.
+  cell 14의 전체 데이터 PCA는 시각화용이며, 최종 원본 XGB의 입력에는 사용하지 않는다.
+- MLP는 benchmark Test AUROC 0.8175로 RF 원본8의 0.8550보다 낮다.
+- RF+AE 0.8556 대 RF 원본 0.8550 차이는 0.0006이며, 유의성·분할 반복 검증이 없다.
+- cell 29의 구현은 MLPRegressor(X, X) 재구성 오토인코더다. 인용 논문 전문이 없어
+  논문의 NSA 절차를 충실하게 재현했는지까지 확인할 수 없다.
+- benchmark에는 SHAP 전역·국소 분석이 있어 설명 범위가 넓다. SHAP을 인과 효과로 해석하지 않는다.
+- 전체 경고를 숨기는 설정과 소스·기존 출력 불일치 흔적이 있어 전체 재실행 확인이 권장된다.
+
+4. 공통 Test 6,022건의 비교
+
+모델                   threshold    AP        AUROC     Precision  Recall    F2
+Benchmark XGB          0.5          0.375926  0.866984  0.568966   0.080685  0.097403
+현재 최종 XGB          0.5          0.371357  0.866532  0.622951   0.092910  0.111962
+현재 최종 XGB          0.100395     0.371357  0.866532  0.271037   0.677262  0.521068
+
+같은 threshold=0.5에서 benchmark의 AP는 0.004569 높고 AUROC는 0.000452 높다.
+현재 모델의 Precision·Recall·F2는 이 부분집합에서 조금 높다. 유의한 우열이라는 뜻은 아니다.
+현재 모델의 낮은 임계값 행은 별도 운영 규칙의 효과이며 benchmark 기본0.5와 모델 우위 비교에 쓰지 않는다.
+
+5. 현재 과제의 강점과 한계
+
+강점: 전처리·PCA·리샘플링을 fold 내부에 배치하고, 동일한 검증 분할로 조건을 비교하며,
+AP와 F2 임계값을 구분했다. 입력 전처리와 임계값을 모델 산출물에 함께 보관한다.
+한계: 단계별 후보 제거와 제한된 튜닝, 같은 CV를 사용한 선택 편향, 단일 데이터셋,
+가공 변수 정의와 SMOTE 이산값 처리, Test 확인 후 추가 분석이 있다. XAI는 하지 않았다.
+현재 과제가 모든 기법 또는 통계적 타당성 측면에서 완벽하다고 주장하지 않는다.
+
+6. 권장 해석
+
+benchmark는 실험 범위와 XAI 설명이 넓지만, 리샘플링 CV 설계의 큰 점수는 그대로 믿기 어렵다.
+현재 과제는 주 실험의 누수 통제와 평가 목적 구분이 더 명확하다.
+저장된 원본 XGB 둘의 공통 미학습 부분집합 성능은 상당히 비슷하다.
+benchmark의 최종 원본 XGB 자체가 리샘플링 CV 누수 모델인 것은 아니므로 구분해서 평가한다.
+
+근거 파일
+- benchmark/creditanalysis.ipynb: cell 16~18, 20, 23, 25, 27, 29, 31~33
+- notebook_audit.json: 분할 재구성·모델 일치 검증
+- split_audit_metrics.csv: 두 평가 집합의 상세 수치
+- common_test_curves.png, split_overlap_comparison.png: 수정된 비교 시각화
+
+방법론 참고
+https://imbalanced-learn.org/stable/common_pitfalls
+https://scikit-learn.org/stable/common_pitfalls.html
+
+[분석 후 업데이트] 현재 최종 모델에도 TreeSHAP XAI를 추가했다. 위 XAI 미수행 표기는 최초 비교 당시 상태다. 전역·개별 기여도와 오분류 사례는 submission/xai/에서 확인한다.

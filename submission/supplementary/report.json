@@ -1,0 +1,256 @@
+{
+  "seed": 33,
+  "n_bootstrap": 1000,
+  "stratified": true,
+  "model_unchanged_sha256": "fb48ad400e3727e8fe369e0587a51a0806aa6346ba0131d0208c13aaf4b28c0f",
+  "risk_groups": [
+    {
+      "grouping": "pastdue",
+      "group": "1-2",
+      "n": 16515,
+      "positives": 2907,
+      "positive_rate": 0.1760217983651226,
+      "debt_ratio_median": 0.39713692,
+      "debt_ratio_p95": 2532.2999999999993
+    },
+    {
+      "grouping": "pastdue",
+      "group": "0",
+      "n": 100831,
+      "positives": 4050,
+      "positive_rate": 0.04016621872241672,
+      "debt_ratio_median": 0.358293714,
+      "debt_ratio_p95": 2429.5
+    },
+    {
+      "grouping": "pastdue",
+      "group": "3-5",
+      "n": 2255,
+      "positives": 853,
+      "positive_rate": 0.3782705099778271,
+      "debt_ratio_median": 0.465365389,
+      "debt_ratio_p95": 3069.8999999999883
+    },
+    {
+      "grouping": "pastdue",
+      "group": "Other normal",
+      "n": 193,
+      "positives": 98,
+      "positive_rate": 0.5077720207253886,
+      "debt_ratio_median": 0.521441726,
+      "debt_ratio_p95": 2528.9999999999977
+    },
+    {
+      "grouping": "pastdue",
+      "group": "Special 96/98",
+      "n": 206,
+      "positives": 113,
+      "positive_rate": 0.5485436893203883,
+      "debt_ratio_median": 0.0,
+      "debt_ratio_p95": 21.75
+    },
+    {
+      "grouping": "debt_ratio",
+      "group": "<=1",
+      "n": 91870,
+      "positives": 6196,
+      "positive_rate": 0.06744312615652552,
+      "debt_ratio_median": 0.2744531255,
+      "debt_ratio_p95": 0.7425455937500003
+    },
+    {
+      "grouping": "debt_ratio",
+      "group": ">1000",
+      "n": 13522,
+      "positives": 666,
+      "positive_rate": 0.04925306907262239,
+      "debt_ratio_median": 2265.0,
+      "debt_ratio_p95": 5969.899999999998
+    },
+    {
+      "grouping": "debt_ratio",
+      "group": "100-1000",
+      "n": 5940,
+      "positives": 455,
+      "positive_rate": 0.0765993265993266,
+      "debt_ratio_median": 494.0,
+      "debt_ratio_p95": 947.0500000000002
+    },
+    {
+      "grouping": "debt_ratio",
+      "group": "1-10",
+      "n": 5028,
+      "positives": 546,
+      "positive_rate": 0.10859188544152745,
+      "debt_ratio_median": 1.5247762945,
+      "debt_ratio_p95": 8.0
+    },
+    {
+      "grouping": "debt_ratio",
+      "group": "10-100",
+      "n": 3640,
+      "positives": 158,
+      "positive_rate": 0.043406593406593405,
+      "debt_ratio_median": 37.0,
+      "debt_ratio_p95": 90.0
+    },
+    {
+      "grouping": "rev_util",
+      "group": "<=1",
+      "n": 117359,
+      "positives": 7045,
+      "positive_rate": 0.0600294821871352,
+      "debt_ratio_median": 0.36654558,
+      "debt_ratio_p95": 2460.0499999999956
+    },
+    {
+      "grouping": "rev_util",
+      "group": "1-10",
+      "n": 2446,
+      "positives": 961,
+      "positive_rate": 0.392886345053148,
+      "debt_ratio_median": 0.374230026,
+      "debt_ratio_p95": 1450.75
+    },
+    {
+      "grouping": "rev_util",
+      "group": ">100",
+      "n": 180,
+      "positives": 9,
+      "positive_rate": 0.05,
+      "debt_ratio_median": 0.3568901715,
+      "debt_ratio_p95": 3880.2999999999997
+    },
+    {
+      "grouping": "rev_util",
+      "group": "10-100",
+      "n": 15,
+      "positives": 6,
+      "positive_rate": 0.4,
+      "debt_ratio_median": 0.796489669,
+      "debt_ratio_p95": 625.7999999999988
+    },
+    {
+      "grouping": "income_observed",
+      "group": "Other income",
+      "n": 118502,
+      "positives": 7957,
+      "positive_rate": 0.0671465460498557,
+      "debt_ratio_median": 0.36275976200000004,
+      "debt_ratio_p95": 2395.0
+    },
+    {
+      "grouping": "income_observed",
+      "group": "Income=0",
+      "n": 1273,
+      "positives": 50,
+      "positive_rate": 0.03927729772191673,
+      "debt_ratio_median": 944.0,
+      "debt_ratio_p95": 5188.599999999998
+    },
+    {
+      "grouping": "income_observed",
+      "group": "Income=6600 (observed)",
+      "n": 225,
+      "positives": 14,
+      "positive_rate": 0.06222222222222222,
+      "debt_ratio_median": 0.299500076,
+      "debt_ratio_p95": 0.8020299951999987
+    }
+  ],
+  "ablation": [
+    {
+      "model": "LR",
+      "preprocessing": "Raw8",
+      "AP_mean": 0.24376899886691583,
+      "AP_std": 0.008423677269342704,
+      "AUROC_mean": 0.8002436747990023,
+      "AUROC_std": 0.0032561359019326226
+    },
+    {
+      "model": "LR",
+      "preprocessing": "Clean_NoLog",
+      "AP_mean": 0.26563298254173046,
+      "AP_std": 0.008221661784888945,
+      "AUROC_mean": 0.8023085663616552,
+      "AUROC_std": 0.003862235152819275
+    },
+    {
+      "model": "LR",
+      "preprocessing": "Clean_Log",
+      "AP_mean": 0.2766648320287032,
+      "AP_std": 0.007001675989651604,
+      "AUROC_mean": 0.8227874968111545,
+      "AUROC_std": 0.0029756896349138686
+    },
+    {
+      "model": "LR",
+      "preprocessing": "Clean_Log_ZeroIncome",
+      "AP_mean": 0.27668878387304674,
+      "AP_std": 0.006897714050851204,
+      "AUROC_mean": 0.8232365264090991,
+      "AUROC_std": 0.0033592081430146334
+    },
+    {
+      "model": "XGB",
+      "preprocessing": "Raw8",
+      "AP_mean": 0.3507310701982395,
+      "AP_std": 0.012458056874520241,
+      "AUROC_mean": 0.8552844802105192,
+      "AUROC_std": 0.0033540731112129997
+    },
+    {
+      "model": "XGB",
+      "preprocessing": "Clean_NoLog",
+      "AP_mean": 0.35070464086985226,
+      "AP_std": 0.013790362419516854,
+      "AUROC_mean": 0.8550264169409063,
+      "AUROC_std": 0.003447591275855825
+    },
+    {
+      "model": "XGB",
+      "preprocessing": "Clean_Log",
+      "AP_mean": 0.34981558514201827,
+      "AP_std": 0.013606655987854089,
+      "AUROC_mean": 0.8552517370078215,
+      "AUROC_std": 0.0032049640416524404
+    },
+    {
+      "model": "XGB",
+      "preprocessing": "Clean_Log_ZeroIncome",
+      "AP_mean": 0.34981558514201827,
+      "AP_std": 0.013606655987854089,
+      "AUROC_mean": 0.8552517370078215,
+      "AUROC_std": 0.0032049640416524404
+    }
+  ],
+  "bootstrap": [
+    {
+      "comparison": "XGB_None - LGB_None",
+      "AP_A": 0.3492878808715564,
+      "AP_B": 0.3368370300007117,
+      "delta_AP": 0.012450850870844687,
+      "CI_low": 0.005793620180672482,
+      "CI_high": 0.019705290751121343,
+      "contains_zero": false,
+      "n_bootstrap": 1000
+    },
+    {
+      "comparison": "XGB_None - XGB_IR",
+      "AP_A": 0.3492878808715564,
+      "AP_B": 0.34431094417895014,
+      "delta_AP": 0.0049769366926062375,
+      "CI_low": -0.00010467519070291724,
+      "CI_high": 0.010252566378198328,
+      "contains_zero": true,
+      "n_bootstrap": 1000
+    }
+  ],
+  "limitations": [
+    "추가 진단과 ablation은 최초 Test 확인 후 수행한 탐색적 분석이며 최종 모델 재선정에 사용하지 않았다.",
+    "DebtRatio 극단값의 모든 원인이 무소득 또는 절대액 기록이라고 단정하지 않는다.",
+    "Income=6600은 관측값 그룹이며 원래 결측이었다는 표식이 아니다.",
+    "bootstrap은 고정된 기준 모델의 Test 표본 불확실성이다. CV 평균 차이의 CI가 아니며 재학습·모델선택 변동성을 포함하지 않는다.",
+    "관측 클래스 비율에 조건부인 층화 bootstrap의 percentile 구간이며 사후 두 비교에 대한 동시 신뢰구간/다중검정 보정이 아니다."
+  ]
+}

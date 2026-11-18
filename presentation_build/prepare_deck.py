@@ -5,6 +5,10 @@ import json
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'submission'
 e = json.loads((OUT / 'presentation_evidence.json').read_text(encoding='utf-8'))
+xai_path = OUT / 'xai/xai_report.json'
+xai = json.loads(xai_path.read_text(encoding='utf-8')) if xai_path.exists() else None
+if xai:
+    e['xai'] = {k: v for k, v in xai.items() if k not in ['explained_row_indices', 'background_row_indices']}
 # pandas의 기본 CSV 파서가 문자열 None을 결측으로 읽은 기존 집계도 복구한다.
 for row in e['balance']:
     if not isinstance(row['balance'], str):
@@ -83,8 +87,16 @@ add('부록: 지표·재현성·근거', '',
     notes='수치 근거: baseline_summary.csv, feature_summary.csv, balance_summary.csv, final_test_metrics.csv, final_config.json, submission/followup_tuning_results.csv. 지표 설명: https://scikit-learn.org/stable/modules/model_evaluation.html . threshold: https://scikit-learn.org/stable/modules/classification_threshold.html . XGB: https://xgboost.readthedocs.io/en/stable/parameter.html . 논문 제목과 정확한 범주 가공 규칙은 제공되지 않아 임의로 기재하지 않았습니다.')
 
 assert sum(s['seconds'] for s in slides[:8]) == 420
+if xai:
+    slides[9]['body'] = slides[9]['body'].replace('XAI·유의성 검정은 이번 결과에 포함하지 않음', 'XAI: 최종 XGB TreeSHAP 분석 추가\n유의성 검정은 수행하지 않음')
+    top = xai['importance'][:5]
+    add('부록: 최종 XGB의 SHAP 중요도', 'Train 배경 100건 · Test 층화 표본 1,000건 · 모델 재학습 없음',
+        '상위: RevUtil\nCombDefault·Age\n단위는 log-odds\n방향은 beeswarm 확인\n인과 효과 아님',
+        chart=chart([r['feature'] for r in top], [series('Mean |SHAP|', [r['mean_abs_shap'] for r in top])], max_value=0.8),
+        notes='Train 실제 표본 100건을 배경으로 Test 층화 표본 1000건에 대해 interventional TreeExplainer를 적용했습니다. 평균 절대 SHAP 값은 RevUtil, CombDefault, Age 순으로 높았습니다. beeswarm에서는 높은 RevUtil과 높은 CombDefault 값이 양성 점수를 높이는 방향의 기여를 보였습니다. 이 값은 확률의 퍼센트가 아니라 log-odds 단위이고, 특성 값은 로그 및 z-score 변환 후의 모델 입력입니다. 기여도 합계와 기준값이 실제 모델 raw 점수와 일치하는지도 검증했습니다. 고위험으로 예측한 사례가 실제 정답이라는 뜻은 아니며 오탐과 미탐도 함께 설명했습니다. SHAP은 실제 연체의 인과 원인을 증명하지 않습니다. 근거: submission/xai/xai_report.json, https://shap.readthedocs.io/en/stable/generated/shap.TreeExplainer.html')
 (OUT / 'deck_spec.json').write_text(json.dumps(slides, ensure_ascii=False, indent=2), encoding='utf-8')
-script = ['GMSC 발표 대본 — 본문 8장, 목표 7분 / 부록 2장',
+appendix_count = len(slides)-8
+script = [f'GMSC 발표 대본 — 본문 8장, 목표 7분 / 부록 {appendix_count}장',
           '시간은 배분 목표입니다. 실제 낭독 속도로 1회 리허설 후 문장을 조절하세요.', '']
 for i, s in enumerate(slides):
     script.extend([f"{i+1}. {s['title']} ({s['seconds']}초)" if s['seconds'] else f"{i+1}. {s['title']} (부록)", s['notes'], ''])
@@ -104,14 +116,16 @@ summary = f'''GMSC 과제 결과 정리
    선택 설정={json.dumps(fu['best_params'], ensure_ascii=False)}.
    추가 탐색에서 Test는 재평가하지 않음. 기존 최적 설정이 다시 선택되어 기존 고정 모델의 Test 결과를 유지.
 10. 한계: 단계적 선택 편향, CV fold 비독립성, 범주 가공 규칙 미확정, 일반 SMOTE 보간, 단일 데이터셋.
-    검정·XAI는 수행한 것으로 쓰지 않는다. CV 차이를 통계적 유의성으로 주장하지 않는다.
+    유의성 검정은 수행하지 않았다. CV 차이를 통계적 유의성으로 주장하지 않는다.
 
 제출 확인
 - ass.ipynb의 기존 실행 결과 및 데이터 경로 확인
-- GMSC_7min.pptx: 본문 8장+부록 2장, 발표자 노트 포함
+- GMSC_7min.pptx: 본문 8장+부록 {appendix_count}장, 발표자 노트 포함
 - 발표대본_7분.txt로 실제 리허설
 - 익명 발표자료이므로 필요한 이름·학번을 표지에 직접 입력
 - 이후 Test 점수를 보고 설정을 다시 선택하지 않기
 '''
+if xai:
+    summary += '\nXAI 추가: Train 배경100건·Test 층화1000건의 TreeSHAP. RevUtil·CombDefault·Age가 상위이며, 단위는 log-odds다. 전역 중요도·beeswarm·오탐/미탐 포함 개별 waterfall은 submission/xai/에 보관한다. 인과 원인으로 해석하지 않는다.\n'
 (OUT / '결과정리_제출안내.txt').write_text(summary, encoding='utf-8')
 print('Deck specification, script and summary prepared.')

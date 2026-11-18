@@ -126,6 +126,8 @@ else:
     from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
     from lightgbm import LGBMClassifier
     from xgboost import XGBClassifier
+    sys.path.insert(0, str(ROOT))
+    from gmsc_preprocessing import GMSCPreprocessor
     SEED = 33
     for cell in nb['cells']:
         if cell['cell_type'] != 'code':
@@ -133,8 +135,6 @@ else:
         text = ''.join(cell['source'])
         tree = ast.parse(text)
         for item in tree.body:
-            if isinstance(item, ast.ClassDef) and item.name == 'GMSCPreprocessor':
-                exec(compile(ast.Module(body=[item], type_ignores=[]), '<preprocessor>', 'exec'))
             if isinstance(item, ast.Assign) and any(isinstance(t, ast.Name) and t.id == 'models' for t in item.targets):
                 exec(compile(ast.Module(body=[item], type_ignores=[]), '<models>', 'exec'))
     data = pd.read_csv('givemesomecredit.csv').rename(columns={
